@@ -35,9 +35,16 @@ class DepartmentResource extends Resource
                 }),
                 TextInput::make('description'),
                 TextInput::make('slug'),
-                Checkbox::make('active'),
                 TextInput::make('meta_title'),
                 TextInput::make('meta_description'),
+                Checkbox::make('active'),
+                TextInput::make('order')
+                ->numeric()
+                ->inputMode('numeric')
+                ->integer()
+                ->minValue(1)
+                ->step(1)
+                ->required()
             ]);
     }
 
