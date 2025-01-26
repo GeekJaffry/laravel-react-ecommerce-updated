@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Checkbox;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\IntegerInput;
+use App\Enums\RolesEnum;
+use App\Filament\Resources\DepartmentResource\RelationManagers\CategoriesRelationManager;
 class DepartmentResource extends Resource
 {
     protected static ?string $model = Department::class;
@@ -75,7 +78,7 @@ class DepartmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CategoriesRelationManager::class,
         ];
     }
 
@@ -86,5 +89,11 @@ class DepartmentResource extends Resource
             'create' => Pages\CreateDepartment::route('/create'),
             'edit' => Pages\EditDepartment::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        $user = auth()->user();
+        return $user && $user->hasAnyRole([RolesEnum::ADMIN]);
     }
 }
